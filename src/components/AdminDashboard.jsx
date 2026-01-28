@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function AdminDashboard({ sauces, onToggle, onAddSauce, onSwitchView }) {
+function AdminDashboard({ sauces, onToggle, onAddSauce }) {
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
 
@@ -30,16 +31,11 @@ function AdminDashboard({ sauces, onToggle, onAddSauce, onSwitchView }) {
         {sauces.map((sauce) => (
           <li key={sauce.id}>
             <strong>{sauce.name}</strong>
-
             <div>Ingredients: {sauce.ingredients.join(", ")}</div>
-
             <div className={sauce.available ? "available" : "unavailable"}>
               {sauce.available ? "Available" : "Unavailable"}
             </div>
-
-            <button onClick={() => onToggle(sauce.id)}>
-              Toggle Availability
-            </button>
+            <button onClick={() => onToggle(sauce.id)}>Toggle Availability</button>
           </li>
         ))}
       </ul>
@@ -61,9 +57,10 @@ function AdminDashboard({ sauces, onToggle, onAddSauce, onSwitchView }) {
         <button type="submit">Add Sauce</button>
       </form>
 
-      <button className="switch-button" onClick={onSwitchView}>
-        View Customer Catalog
-      </button>
+      {/* Use Link instead of onSwitchView */}
+      <Link to="/catalog">
+        <button className="switch-button">View Customer Catalog</button>
+      </Link>
     </div>
   );
 }

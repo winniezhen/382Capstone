@@ -1,4 +1,6 @@
-function CartView({ cart, onBackCatalog }) {
+import { Link } from "react-router-dom";
+
+function CartView({ cart }) {
   return (
     <div>
       <h2>Your Cart</h2>
@@ -7,13 +9,18 @@ function CartView({ cart, onBackCatalog }) {
         <p>Your cart is empty.</p>
       ) : (
         <ul>
-          {cart.map((item, index) => (
-            <li key={index}>{item.name}</li>
+          {cart.map((sauce, index) => (
+            <li key={index}>
+              <strong>{sauce.name}</strong>
+              <div>Ingredients: {sauce.ingredients.join(", ")}</div>
+            </li>
           ))}
         </ul>
       )}
 
-      <button onClick={onBackCatalog}>Back to Catalog</button>
+      <Link to="/catalog">
+        <button>Back to Catalog</button>
+      </Link>
     </div>
   );
 }

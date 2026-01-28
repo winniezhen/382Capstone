@@ -1,4 +1,6 @@
-function ProductCatalog({ sauces, onAddToCart, onViewCart, onBackAdmin }) {
+import { Link } from "react-router-dom";
+
+function ProductCatalog({ sauces, onAddToCart }) {
   return (
     <div>
       <h2>Zen Sauce Catalog</h2>
@@ -9,16 +11,18 @@ function ProductCatalog({ sauces, onAddToCart, onViewCart, onBackAdmin }) {
           .map((sauce) => (
             <li key={sauce.id}>
               <strong>{sauce.name}</strong>
-
               <div>Ingredients: {sauce.ingredients.join(", ")}</div>
-
               <button onClick={() => onAddToCart(sauce)}>Add to Cart</button>
             </li>
           ))}
       </ul>
 
-      <button onClick={onViewCart}>View Cart</button>
-      <button onClick={onBackAdmin}>Back to Admin</button>
+      <Link to="/cart">
+        <button>View Cart</button>
+      </Link>
+      <Link to="/admin">
+        <button>Back to Admin</button>
+      </Link>
     </div>
   );
 }

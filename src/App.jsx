@@ -1,3 +1,4 @@
+import { Routes, Route, Link } from "react-router-dom";
 import { useState } from "react";
 import AdminDashboard from "./components/AdminDashboard";
 import ProductCatalog from "./components/ProductCatalog";
@@ -5,8 +6,6 @@ import CartView from "./components/CartView";
 import "./App.css";
 
 function App() {
-  const [view, setView] = useState("admin");
-
   const [sauces, setSauces] = useState([
     {
       id: 1,
@@ -24,56 +23,67 @@ function App() {
 
   const [cart, setCart] = useState([]);
 
+  // Toggle sauce availability (Admin)
   function toggleAvailability(id) {
     setSauces(
       sauces.map((sauce) =>
-        sauce.id === id ? { ...sauce, available: !sauce.available } : sauce,
-      ),
+        sauce.id === id ? { ...sauce, available: !sauce.available } : sauce
+      )
     );
   }
 
+  // Add a new sauce (Admin)
   function addSauce(newSauce) {
     setSauces([...sauces, newSauce]);
   }
+
+  // Add sauce to cart (Customer)
   function addToCart(sauce) {
     setCart([...cart, sauce]);
-  }
-
-  // Old View Switcher
-  // function switchView() {
-  //   setView(view === "admin" ? "catalog" : "admin");
-  // }
-
-  // New View Switcher
-  function switchView(newView) {
-    setView(newView);
   }
 
   return (
     <div className="container">
       <h1>Zen Sauce Dashboard</h1>
 
-      {view === "admin" && (
-        <AdminDashboard
-          sauces={sauces}
-          onToggle={toggleAvailability}
-          onAddSauce={addSauce}
-          onSwitchView={() => switchView("catalog")}
-        />
-      )}
+      {/* Navigation */}
+      <nav>
+        <Link to="/admin">Admin</Link> |{" "}
+        <Link to="/catalog">Catalog</Link> |{" "}
+        <Link to="/cart">Cart</Link>
+      </nav>
 
-      {view === "catalog" && (
-        <ProductCatalog
-          sauces={sauces}
-          onAddToCart={addToCart}
-          onViewCart={() => switchView("cart")}
-          onBackAdmin={() => switchView("admin")}
+      {/* Routes */}
+      <Routes>
+        <Route
+          path="/admin"
+          element={
+            <AdminDashboard
+              sauces={sauces}
+              onToggle={toggleAvailability}
+              onAddSauce={addSauce}
+            />
+          }
         />
-      )}
 
-      {view === "cart" && (
-        <CartView cart={cart} onBackCatalog={() => switchView("catalog")} />
-      )}
+        <Route
+          path="/catalog"
+          element={
+            <ProductCatalog
+              sauces={sauces}
+              onAddToCart={addToCart}
+            />
+          }
+        />
+
+        <Route
+          path="/cart"
+          element={<CartView cart={cart} />}
+        />
+
+        {/* Default route */}
+        <Route path="*" element={<p>Select a view above.</p>} />
+      </Routes>
     </div>
   );
 }
